@@ -1,0 +1,111 @@
+{
+  "evalues": [
+    {
+      "site": "all_cancers",
+      "hr": 1.05,
+      "rr": 1.05,
+      "evalue_point": 1.2791287847477921,
+      "evalue_ci": 1.0
+    },
+    {
+      "site": "female_breast",
+      "hr": 1.11,
+      "rr": 1.11,
+      "evalue_point": 1.4594281041931232,
+      "evalue_ci": 1.2791287847477921
+    },
+    {
+      "site": "leukaemia_excl_cll",
+      "hr": 1.15,
+      "rr": 1.15,
+      "evalue_point": 1.5653311931459035,
+      "evalue_ci": 1.2057839583124697
+    },
+    {
+      "site": "leukaemia_excl_mm_cll",
+      "hr": 1.18,
+      "rr": 1.18,
+      "evalue_point": 1.6408687448721164,
+      "evalue_ci": 1.2439607805437116
+    }
+  ],
+  "measurement_error": {
+    "beta_true": 5.0,
+    "oracle": 5.166948959648262,
+    "classical": 3.9604934963755514,
+    "berkson": 5.166948959648262
+  },
+  "exposure_sensitivity": [
+    {
+      "ge100_sv": 0.15,
+      "hr_per_100msv": 1.8474238819795068,
+      "p": 2.3389222786339034e-07
+    },
+    {
+      "ge100_sv": 0.2,
+      "hr_per_100msv": 1.5589646467544334,
+      "p": 3.4891553742592923e-07
+    },
+    {
+      "ge100_sv": 0.25,
+      "hr_per_100msv": 1.414234066296017,
+      "p": 4.7633335936064173e-07
+    },
+    {
+      "ge100_sv": 0.4,
+      "hr_per_100msv": 1.2312077893573452,
+      "p": 8.248128773118172e-07
+    },
+    {
+      "ge100_sv": 0.6,
+      "hr_per_100msv": 1.1449125274388119,
+      "p": 1.1585209339173954e-06
+    },
+    {
+      "ge100_sv": 0.8,
+      "hr_per_100msv": 1.1054175578240217,
+      "p": 1.3834630480592745e-06
+    }
+  ],
+  "multiple_comparisons": {
+    "survivors": [
+      {
+        "site": "leukaemia_excl_mm_cll",
+        "survives_fdr": true
+      },
+      {
+        "site": "female_breast",
+        "survives_fdr": true
+      },
+      {
+        "site": "leukaemia_excl_cll",
+        "survives_fdr": true
+      },
+      {
+        "site": "lung",
+        "survives_fdr": false
+      },
+      {
+        "site": "cervix_uteri",
+        "survives_fdr": false
+      },
+      {
+        "site": "stomach",
+        "survives_fdr": false
+      },
+      {
+        "site": "thyroid",
+        "survives_fdr": false
+      },
+      {
+        "site": "liver",
+        "survives_fdr": false
+      },
+      {
+        "site": "rectum",
+        "survives_fdr": false
+      }
+    ],
+    "hwang_expected_false_positives": 3.85
+  }
+}

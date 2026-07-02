@@ -1,0 +1,17 @@
+# Source: Hsieh/Chang et al. 2017, Br J Cancer 117(12):1883-1887, Table 2.
+#   Adjusted hazard ratio per 100 mSv (Cox model on individually reconstructed cumulative dose),
+#   10-year latency for solid cancers, 2-year for leukaemia. 90% confidence intervals.
+# URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC5729469/   Extracted: 2026-07-02.
+site,cases,hr_100msv,ci90_low,ci90_high,pvalue
+all_cancers,249,1.05,1.00,1.08,0.04
+all_cancers_excl_leukaemia,241,1.04,1.00,1.08,0.08
+all_solid_cancers,236,1.04,1.00,1.08,0.07
+female_breast,35,1.11,1.05,1.20,0.008
+cervix_uteri,24,1.10,0.96,1.20,0.10
+lung,24,1.10,1.00,1.17,0.05
+thyroid,20,1.06,0.83,1.17,0.52
+liver,18,1.05,0.88,1.15,0.52
+stomach,13,1.08,0.92,1.19,0.27
+rectum,16,1.03,0.73,1.17,0.78
+leukaemia_excl_mm_cll,8,1.18,1.04,1.28,0.006
+leukaemia_excl_cll,11,1.15,1.03,1.24,0.012

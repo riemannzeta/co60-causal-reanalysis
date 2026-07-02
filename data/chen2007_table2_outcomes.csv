@@ -1,0 +1,9 @@
+# Source: Chen/Luan et al. 2007, Dose-Response 5(1):63-75, Table 2 (20-year period).
+#   Compares "natural" (baseline-expected) deaths, ICRP/LNT-predicted deaths, and OBSERVED
+#   deaths, for the ~10,000-person cohort. This is the core hormesis claim: observed << expected.
+# URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC2477708/   Extracted: 2026-07-02.
+# CAUTION: endpoint is MORTALITY (not incidence), young cohort, short follow-up -> observed
+#   deaths are expected to be low on age grounds alone. See 04_bias_analysis / 05_synthesis.
+outcome,natural_expected,icrp_predicted,observed
+cancer_deaths,232,302,7
+congenital_malformations,46,67,3

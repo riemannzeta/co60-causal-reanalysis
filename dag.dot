@@ -1,0 +1,35 @@
+digraph co60 {
+  rankdir=LR;
+  node [shape=box, fontname="Helvetica"];
+  "Building" [style=solid, fillcolor="white", label="Building"];
+  "TrueDose" [style=filled, fillcolor="#eeeeee", label="TrueDose (unmeasured)"];
+  "SES" [style=filled, fillcolor="#eeeeee", label="SES (unmeasured)"];
+  "AssignedDose" [style=solid, fillcolor="white", label="AssignedDose"];
+  "DoseError" [style=filled, fillcolor="#eeeeee", label="DoseError (unmeasured)"];
+  "AgeAtExposure" [style=solid, fillcolor="white", label="AgeAtExposure"];
+  "Sex" [style=solid, fillcolor="white", label="Sex"];
+  "Cancer" [style=solid, fillcolor="white", label="Cancer"];
+  "AttainedAge" [style=solid, fillcolor="white", label="AttainedAge"];
+  "CalendarPeriod" [style=solid, fillcolor="white", label="CalendarPeriod"];
+  "Smoking" [style=filled, fillcolor="#eeeeee", label="Smoking (unmeasured)"];
+  "ReproHistory" [style=filled, fillcolor="#eeeeee", label="ReproHistory (unmeasured)"];
+  "Selection" [style=filled, fillcolor="#eeeeee", label="Selection (unmeasured)"];
+  "Building" -> "TrueDose";
+  "TrueDose" -> "AssignedDose";
+  "TrueDose" -> "Cancer";
+  "SES" -> "Building";
+  "SES" -> "Cancer";
+  "SES" -> "Smoking";
+  "SES" -> "Selection";
+  "DoseError" -> "AssignedDose";
+  "AgeAtExposure" -> "AssignedDose";
+  "AgeAtExposure" -> "Cancer";
+  "AgeAtExposure" -> "AttainedAge";
+  "AgeAtExposure" -> "Selection";
+  "Sex" -> "AssignedDose";
+  "Sex" -> "Cancer";
+  "AttainedAge" -> "Cancer";
+  "CalendarPeriod" -> "Cancer";
+  "Smoking" -> "Cancer";
+  "ReproHistory" -> "Cancer";
+}

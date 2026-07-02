@@ -1,0 +1,48 @@
+{
+  "internal_breast": {
+    "err_per_sv": {
+      "model": "linear-ERR",
+      "param": "ERR_per_Sv",
+      "estimate": 7.179585300666288,
+      "se": 5.015522233435666,
+      "ci_low": -2.650657640527511,
+      "ci_high": 17.009828241860085,
+      "pvalue": 0.0268663194131138,
+      "note": "rate = exp(alpha_stratum)*(1+beta*dose_Sv); profile-likelihood MLE"
+    },
+    "hr_per_100msv": {
+      "model": "log-linear",
+      "param": "HR_per_100mSv",
+      "estimate": 1.4981066649394683,
+      "se": NaN,
+      "ci_low": 1.0795950158015362,
+      "ci_high": 2.0788569293919696,
+      "pvalue": 0.015600082224983419,
+      "note": "HR per 100 mSv = exp(gamma*0.1); rate=exp(alpha+gamma*dose_Sv)"
+    }
+  },
+  "gradients": {
+    "age_gradient": 14.431671034582147,
+    "dose_gradient": 2.609607074884758,
+    "age_rates": {
+      "lt20": 7.3156623226377215,
+      "20_39": 37.81995002363747,
+      "ge40": 105.57723204039476
+    },
+    "dose_rates": {
+      "lt5": 18.958028365050037,
+      "5_99": 26.44298502286668,
+      "ge100": 49.473004947300495
+    }
+  },
+  "standardization": {
+    "std_cohort_rate": 25.4361213519247,
+    "std_ref_rate": 52.383712419202595,
+    "ratio": 2.05942217740044,
+    "ref_weights": [
+      0.3,
+      0.35,
+      0.35
+    ]
+  }
+}

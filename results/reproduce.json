@@ -1,0 +1,113 @@
+{
+  "doss_sir": [
+    {
+      "dataset": "hsieh2017_2012",
+      "observed": 249,
+      "expected": 296.4,
+      "sir": 0.8400809716599191,
+      "ci_low": 0.7389640486057768,
+      "ci_high": 0.9511692971495244,
+      "conf": 0.95,
+      "published_sir": 0.84,
+      "published_ci": [
+        0.74,
+        0.95
+      ],
+      "matches": true
+    },
+    {
+      "dataset": "hwang2008_2005",
+      "observed": 117,
+      "expected": 156.8,
+      "sir": 0.7461734693877551,
+      "ci_low": 0.617094824076914,
+      "ci_high": 0.8942762359686119,
+      "conf": 0.95,
+      "published_sir": 0.75,
+      "published_ci": [
+        0.61,
+        0.88
+      ],
+      "matches": true
+    }
+  ],
+  "solid_marginal": {
+    "target": "solid cancers",
+    "monotone_gradient": true,
+    "crude_rate_per10k": {
+      "lt5": 18.958028365050037,
+      "5_99": 26.44298502286668,
+      "ge100": 49.473004947300495
+    },
+    "loglinear": {
+      "model": "log-linear",
+      "param": "HR_per_100mSv",
+      "estimate": 1.414234066296017,
+      "se": NaN,
+      "ci_low": 1.2357632130148943,
+      "ci_high": 1.6184799589499193,
+      "pvalue": 4.7633335936064173e-07,
+      "note": "HR per 100 mSv = exp(gamma*0.1); rate=exp(alpha+gamma*dose_Sv)"
+    },
+    "err": {
+      "model": "linear-ERR",
+      "param": "ERR_per_Sv",
+      "estimate": 6.151973454638075,
+      "se": 1.8897335281951932,
+      "ci_low": 2.448163798997689,
+      "ci_high": 9.85578311027846,
+      "pvalue": 2.007882946594417e-06,
+      "note": "rate = exp(alpha_stratum)*(1+beta*dose_Sv); profile-likelihood MLE"
+    }
+  },
+  "leuk_marginal": {
+    "target": "leukaemia",
+    "monotone_gradient": true,
+    "crude_rate_per10k": {
+      "lt5": 0.0,
+      "5_99": 1.1658408627222385,
+      "ge100": 2.1557918942224776
+    },
+    "loglinear": {
+      "model": "log-linear",
+      "param": "HR_per_100mSv",
+      "estimate": 1.881337437444693,
+      "se": NaN,
+      "ci_low": 1.090010515198852,
+      "ci_high": 3.2471526688760997,
+      "pvalue": 0.023240085438945353,
+      "note": "HR per 100 mSv = exp(gamma*0.1); rate=exp(alpha+gamma*dose_Sv)"
+    },
+    "err": {
+      "model": "linear-ERR",
+      "param": "ERR_per_Sv",
+      "estimate": 9999.999749069682,
+      "se": 239488.54918496314,
+      "ci_low": -459388.9313632074,
+      "ci_high": 479388.9308613468,
+      "pvalue": 0.0067303432050087215,
+      "note": "rate = exp(alpha_stratum)*(1+beta*dose_Sv); profile-likelihood MLE [UNSTABLE: sparse/zero reference cell -- interpret via log-linear HR]"
+    }
+  },
+  "breast_age": {
+    "le20": {
+      "hr_per_100msv": 2.0946748005596043,
+      "ci": [
+        1.05557741241199,
+        4.156646844188933
+      ],
+      "pvalue": 0.03445948302318801,
+      "published_trend": 1.38
+    },
+    "gt20": {
+      "hr_per_100msv": 1.3843176373692354,
+      "ci": [
+        0.9549092093450493,
+        2.006824630423151
+      ],
+      "pvalue": 0.08608107716575732,
+      "published_trend": 1.07
+    },
+    "young_steeper": true
+  }
+}

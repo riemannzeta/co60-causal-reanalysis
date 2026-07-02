@@ -1,0 +1,11 @@
+# Source: Doss M. 2018. "Comment on '30 years follow-up and increased risks of breast
+#   cancer and leukaemia after long-term low-dose-rate radiation exposure'." Br J Cancer 118:e10.
+#   Recomputes the external Standardized Incidence Ratio (SIR = observed / expected) from
+#   published aggregates, projecting Hwang 2006's 114.9 expected (to 2002) forward using
+#   Taiwan Cancer Registry age-specific incidence.
+# URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC5846074/   Extracted: 2026-07-02.
+# published_sir / published_ci* are Doss's printed values; the pipeline recomputes the CI
+#   from observed counts (Byar/exact Poisson) as a validation check.
+dataset,followup_through,observed,expected,published_sir,published_ci95_low,published_ci95_high
+hsieh2017_2012,2012,249,296.4,0.84,0.74,0.95
+hwang2008_2005,2005,117,156.8,0.75,0.61,0.88

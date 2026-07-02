@@ -1,0 +1,61 @@
+{
+  "available_adjustment": {
+    "treatment": "AssignedDose",
+    "outcome": "Cancer",
+    "adjustment_set": [
+      "AgeAtExposure",
+      "AttainedAge",
+      "CalendarPeriod",
+      "Sex"
+    ],
+    "open_backdoor_paths": [
+      "AssignedDose - TrueDose - Building - SES - Cancer",
+      "AssignedDose - TrueDose - Building - SES - Smoking - Cancer",
+      "AssignedDose - TrueDose - Cancer"
+    ],
+    "blocked_backdoor_paths": [
+      "AssignedDose - TrueDose - Building - SES - Selection - AgeAtExposure - Cancer",
+      "AssignedDose - TrueDose - Building - SES - Selection - AgeAtExposure - AttainedAge - Cancer",
+      "AssignedDose - AgeAtExposure - Cancer",
+      "AssignedDose - AgeAtExposure - AttainedAge - Cancer",
+      "AssignedDose - AgeAtExposure - Selection - SES - Building - TrueDose - Cancer",
+      "AssignedDose - AgeAtExposure - Selection - SES - Cancer",
+      "AssignedDose - AgeAtExposure - Selection - SES - Smoking - Cancer",
+      "AssignedDose - Sex - Cancer"
+    ],
+    "descendant_controls_included": [],
+    "identified": false
+  },
+  "full_adjustment": {
+    "treatment": "AssignedDose",
+    "outcome": "Cancer",
+    "adjustment_set": [
+      "AgeAtExposure",
+      "AttainedAge",
+      "Building",
+      "CalendarPeriod",
+      "ReproHistory",
+      "SES",
+      "Sex",
+      "Smoking"
+    ],
+    "open_backdoor_paths": [
+      "AssignedDose - TrueDose - Cancer"
+    ],
+    "blocked_backdoor_paths": [
+      "AssignedDose - TrueDose - Building - SES - Cancer",
+      "AssignedDose - TrueDose - Building - SES - Smoking - Cancer",
+      "AssignedDose - TrueDose - Building - SES - Selection - AgeAtExposure - Cancer",
+      "AssignedDose - TrueDose - Building - SES - Selection - AgeAtExposure - AttainedAge - Cancer",
+      "AssignedDose - AgeAtExposure - Cancer",
+      "AssignedDose - AgeAtExposure - AttainedAge - Cancer",
+      "AssignedDose - AgeAtExposure - Selection - SES - Building - TrueDose - Cancer",
+      "AssignedDose - AgeAtExposure - Selection - SES - Cancer",
+      "AssignedDose - AgeAtExposure - Selection - SES - Smoking - Cancer",
+      "AssignedDose - Sex - Cancer"
+    ],
+    "descendant_controls_included": [],
+    "identified": false
+  },
+  "note": "The available adjustment set leaves SES/Smoking/ReproHistory backdoor paths OPEN. Identification therefore rests on the authors' quasi-randomization assumption (residents unaware of contamination => dose independent of lifestyle | age), which the bias analyses probe but cannot verify. The TrueDose->AssignedDose (DoseError) edge is a measurement problem, not a confounding one, and is handled separately."
+}

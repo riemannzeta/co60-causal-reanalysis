@@ -1,0 +1,14 @@
+# Source: Hsieh/Chang et al. 2017, Br J Cancer 117(12):1883-1887, Table 1, LEUKAEMIA panel.
+#   (2-year latency applied; 1983-2012). Leukaemia excludes CLL.
+# URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC5729469/   Extracted: 2026-07-02.
+# stratum_type in {overall, sex, age_at_exposure, dose_group}
+stratum_type,stratum,subjects,pct,cases,person_years,incidence_rate
+overall,overall,6242,100.0,11,147984,0.74
+sex,male,2968,47.5,7,69849,1.00
+sex,female,3274,52.5,4,78135,0.51
+age_at_exposure,lt20,3907,62.6,3,90191,0.33
+age_at_exposure,20_39,1721,27.6,4,43979,0.91
+age_at_exposure,ge40,614,9.8,4,13814,2.90
+dose_group,lt5,2932,47.0,0,65448,0.00
+dose_group,5_99,2752,44.1,8,68620,1.17
+dose_group,ge100,558,8.9,3,13916,2.16

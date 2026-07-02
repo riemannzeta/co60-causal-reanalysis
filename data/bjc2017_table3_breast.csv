@@ -1,0 +1,16 @@
+# Source: Hsieh/Chang et al. 2017, Br J Cancer 117(12):1883-1887, Table 3.
+#   Female breast cancer by initial age of exposure (IAE) x cumulative dose group.
+#   This is a JOINT (age x dose) contingency table -> supports age-adjusted dose-response.
+# URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC5729469/   Extracted: 2026-07-02.
+# dose_group cut points here are <5, 5-100, >=100 mSv (as printed in Table 3).
+# Rows with dose_group=trend carry the published linear-trend HR per 100 mSv for that age stratum.
+# incidence is per 10,000 person-years. Reference dose group HR = 1.00.
+age_at_exposure,dose_group,cases,person_years,incidence_per_10k,hr,ci90_low,ci90_high,pvalue
+gt20,lt5,10,14131,7.1,1.00,,,
+gt20,5_100,11,19816,5.6,0.88,0.43,1.82,0.76
+gt20,ge100,7,5123,13.7,2.07,0.89,4.62,0.14
+gt20,trend,,,,1.07,0.98,1.14,0.14
+le20,lt5,1,27829,0.4,1.00,,,
+le20,5_100,4,26792,1.5,3.02,0.59,31.82,0.33
+le20,ge100,2,4321,4.6,10.91,1.55,125.9,0.05
+le20,trend,,,,1.38,1.14,1.60,0.0008

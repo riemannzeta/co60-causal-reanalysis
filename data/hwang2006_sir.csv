@@ -1,0 +1,11 @@
+# Source: Hwang SL, et al. 2006. "Cancer risks in a population with prolonged low dose-rate
+#   gamma-radiation exposure in radiocontaminated buildings, 1983-2002." Int J Radiat Biol
+#   82(12):849-858. Selected external SIRs (observed vs Taiwan-population expected).
+# URL: https://pubmed.ncbi.nlm.nih.gov/17178625/   Extracted: 2026-07-02.
+# Cohort: 7,271 subjects, 101,560 person-years. All-cancer SIR is a DEFICIT (healthy/young cohort);
+#   the few "elevated" sites each rest on <=7 cases -> multiple-comparison caution (see 04).
+# ci95_* are the paper's 95% CIs. Blank = not reported here.
+site,sex,observed,sir,ci95_low,ci95_high
+all_cancers,both,95,0.83,,
+leukaemia_excl_cll,male,6,3.60,1.20,7.40
+thyroid,female,6,2.60,1.00,5.70

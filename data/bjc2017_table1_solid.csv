@@ -1,0 +1,18 @@
+# Source: Hsieh WH, Lin IF, Ho JC, Chang WP (Hsieh/Chang et al.) 2017.
+#   "30 years follow-up and increased risks of breast cancer and leukaemia
+#   after long-term low-dose-rate radiation exposure." Br J Cancer 117(12):1883-1887.
+# Table 1, SOLID CANCERS panel (10-year latency applied; 1983-2012).
+# URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC5729469/  (open access, PMID 28972968)
+# Extracted: 2026-07-02. Incidence rate is per 10,000 person-years as printed in the paper
+#   (may be age-standardized; recompute crude rate as cases/person_years in code).
+# stratum_type in {overall, sex, age_at_exposure, dose_group}
+stratum_type,stratum,subjects,pct,cases,person_years,incidence_rate
+overall,overall,6242,100.0,247,97106,24.30
+sex,male,2968,47.5,113,45890,23.10
+sex,female,3274,52.5,134,51216,25.38
+age_at_exposure,lt20,3907,62.6,43,58778,6.81
+age_at_exposure,20_39,1721,27.6,112,29614,36.47
+age_at_exposure,ge40,614,9.8,92,8714,100.99
+dose_group,lt5,2932,47.0,79,41671,18.96
+dose_group,5_99,2752,44.1,122,46137,24.71
+dose_group,ge100,558,8.9,46,9298,46.25

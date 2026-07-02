@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Did Co-60 exposure cause cancer? A causal reanalysis of the Taiwan rebar cohort</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --muted:#5b6470; --line:#e4e7ec; --bg:#fbfbfa;
+    --accent:#7a1f1f; --accent2:#0b5;--code:#f4f4f2; --good:#1a7f4b; --bad:#a11;
+    --maxw:760px;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:17px/1.6 Georgia,'Iowan Old Style',Cambria,'Times New Roman',serif;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:56px 22px 96px}
+  header{border-bottom:2px solid var(--ink);padding-bottom:26px;margin-bottom:36px}
+  .kicker{font:600 12px/1.4 -apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent);margin:0 0 12px}
+  h1{font-size:33px;line-height:1.18;margin:0 0 16px;letter-spacing:-.01em}
+  .sub{color:var(--muted);font-size:18px;margin:0}
+  .meta{font:13px/1.5 -apple-system,Segoe UI,Roboto,sans-serif;color:var(--muted);margin-top:18px}
+  .meta a{color:var(--accent)}
+  h2{font-size:23px;margin:46px 0 10px;padding-top:10px;letter-spacing:-.01em}
+  h3{font:600 15px/1.4 -apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.02em;
+    margin:28px 0 6px;color:var(--ink)}
+  p{margin:0 0 16px}
+  a{color:var(--accent);text-decoration:underline;text-underline-offset:2px}
+  ul,ol{margin:0 0 16px;padding-left:22px}
+  li{margin:6px 0}
+  code{background:var(--code);padding:.1em .35em;border-radius:4px;
+    font:14px/1.4 ui-monospace,SFMono-Regular,Menlo,monospace}
+  .lead{font-size:19px;color:#2a2a2a}
+  .callout{background:#fff;border:1px solid var(--line);border-left:4px solid var(--accent);
+    border-radius:8px;padding:18px 20px;margin:22px 0}
+  .callout.good{border-left-color:var(--good)}
+  .callout .h{font:700 12px/1.3 -apple-system,Segoe UI,Roboto,sans-serif;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+  table{border-collapse:collapse;width:100%;margin:18px 0;font-size:15px;background:#fff}
+  th,td{border:1px solid var(--line);padding:9px 11px;text-align:left;vertical-align:top}
+  th{background:#f3f2ef;font:600 13px/1.3 -apple-system,Segoe UI,Roboto,sans-serif}
+  td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px}
+  .yes{color:var(--good);font-weight:700}.no{color:var(--bad);font-weight:700}
+  figure.dag{margin:22px 0;text-align:center}
+  .dag pre{display:inline-block;text-align:left;background:#fff;border:1px solid var(--line);
+    border-radius:8px;padding:16px 20px;font:13px/1.5 ui-monospace,Menlo,monospace;color:#333;
+    overflow-x:auto;max-width:100%}
+  figcaption{color:var(--muted);font-size:13px;margin-top:8px}
+  .foot{margin-top:64px;border-top:1px solid var(--line);padding-top:20px;
+    font:13px/1.6 -apple-system,Segoe UI,Roboto,sans-serif;color:var(--muted)}
+  .pill{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:999px;
+    padding:3px 11px;margin:2px 4px 2px 0;font:13px/1 -apple-system,Segoe UI,Roboto,sans-serif}
+  hr{border:0;border-top:1px solid var(--line);margin:40px 0}
+  .small{font-size:14px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <p class="kicker">Causal reanalysis &middot; Judea Pearl framework</p>
+  <h1>Did cobalt-60 exposure cause cancer in the Taiwan rebar cohort?</h1>
+  <p class="sub">A DAG-based reanalysis of the public aggregate data &mdash; and what it says
+  about the case that low-dose radiation is &ldquo;probably fine.&rdquo;</p>
+  <p class="meta">
+    Reanalysis &amp; report auto-generated from a reproducible pipeline &middot;
+    Code &amp; data: <a href="https://github.com/riemannzeta/co60-causal-reanalysis">github.com/riemannzeta/co60-causal-reanalysis</a><br>
+    In response to Ben Southwood &amp; Alex Chalmers,
+    <a href="https://www.worksinprogress.news/p/low-dose-radiation-is-probably-fine"><em>Low-dose radiation is probably fine</em></a>
+    (Works in Progress, 30 June 2026).
+  </p>
+</header>
+
+<p class="lead">In 1982&ndash;84 a Taiwan steel mill recycled orphaned cobalt-60 sources into
+reinforcing rebar that ended up in ~180&ndash;200 Taipei-area buildings. Roughly 6,000&ndash;10,000
+residents were chronically irradiated for years before the contamination was discovered. The
+resulting cohort has been read as proof of two opposite things: that low-dose radiation is
+harmless (even beneficial), and that it measurably causes cancer. This project asks a narrower,
+cleaner question &mdash; <strong>what does a causal-inference reading of the public data actually
+license us to conclude?</strong></p>
+
+<div class="callout good">
+  <p class="h">Bottom line</p>
+  <p style="margin:0">The data are most consistent with a <strong>small but genuine positive
+  dose&ndash;response</strong> (most defensibly for leukaemia and breast cancer in those exposed
+  young), consistent with a linear-no-threshold picture rather than hormesis. The widely-cited
+  <em>overall cancer deficit</em> is an artifact of who lived in these buildings, not evidence of
+  protection &mdash; and it is mathematically incapable of refuting the internal dose effect. But
+  the signal is <strong>fragile and not point-identified</strong> from public data: a moderate
+  unmeasured confounder could weaken it, and a definitive answer needs the restricted
+  individual-level records.</p>
+</div>
+
+<h2>1. The data, and what is actually public</h2>
+<p>There is <strong>no public individual-level dataset</strong> for this cohort. The microdata is
+held under restricted access by Taiwanese institutions (Taipei Medical University / National
+Yang-Ming; the Taiwan Cancer Registry; the Atomic Energy Council for dosimetry) and released only
+on-site through Taiwan&rsquo;s Health and Welfare Data Science Center to IRB-approved, Taiwan-based
+researchers.</p>
+<p>What <em>is</em> public are the aggregate contingency tables in the peer-reviewed papers. This
+reanalysis digitizes those tables (with provenance headers, validated against reported totals) and
+fits causal models to them:</p>
+<table>
+  <thead><tr><th>Source (open access)</th><th>What it provides</th></tr></thead>
+  <tbody>
+    <tr><td>Hsieh &amp; Chang et&nbsp;al. 2017, <em>Br J Cancer</em></td><td>Cases &times; person-years by dose &times; sex &times; age-at-exposure; HR per 100&nbsp;mSv by site; breast cancer age&times;dose table</td></tr>
+    <tr><td>Hwang et&nbsp;al. 2006/2008</td><td>Standardized incidence ratios (SIRs) by site and sex</td></tr>
+    <tr><td>Doss 2018 (BJC comment)</td><td>External SIR recomputation from published counts</td></tr>
+    <tr><td>Chen &amp; Luan 2007, <em>Dose-Response</em></td><td>Dose-cohort dosimetry; observed-vs-expected mortality (the hormesis framing)</td></tr>
+    <tr><td>Tung et&nbsp;al. 1998, <em>Health Physics</em></td><td>Dose-<em>reconstruction</em> method &mdash; parameterizes the measurement-error model</td></tr>
+  </tbody>
+</table>
+<p class="small">Note: PMID&nbsp;9600303 (Tung 1998), sometimes cited as &ldquo;the cohort study,&rdquo;
+is the dose-reconstruction methodology paper, not the cancer-outcome analysis.</p>
+
+<h2>2. Methodology</h2>
+
+<h3>A. Encode the data-generating process as a DAG</h3>
+<p>The core of a Pearl-style analysis is being explicit about the causal structure. Dose was
+effectively assigned at the <strong>building</strong> level (everyone in a unit shared the gamma
+field). Socioeconomic status is an <em>unmeasured</em> common cause of who ended up in a new 1982
+Taipei apartment and of baseline cancer risk. Crucially, the external-SIR design conditions on a
+<strong>selection</strong> node &mdash; membership in this particular, non-random population.</p>
+<figure class="dag">
+<pre>
+        SES (unmeasured) ───────────────┐
+          │           │                 ▼
+          ▼           ▼               Cancer ◄── AgeAtExposure, AttainedAge,
+       Building    Selection            ▲          Sex, CalendarPeriod
+          │       (SIR design)          │
+          ▼                             │   Smoking, ReproHistory (unmeasured)
+       TrueDose ──────────────────────►─┘        │
+          │                                       ▼
+          ▼                                     Cancer
+     AssignedDose ◄── DoseError (reconstruction)
+</pre>
+<figcaption>Simplified DAG. Grey/unmeasured nodes (SES, Smoking, ReproHistory, Selection,
+TrueDose, DoseError) are the crux of the identification problem. Full machine-readable graph in
+<code>dag.py</code> / <code>dag.dot</code>.</figcaption>
+</figure>
+
+<h3>B. Check identifiability &mdash; honestly</h3>
+<p>A self-contained d-separation routine confirms the causal effect is <strong>not identified</strong>
+by the covariates available in the published data (age at exposure, attained age, sex, calendar
+period). The backdoor paths through SES, smoking, and reproductive history stay <em>open</em>.
+Identification therefore rests on the authors&rsquo; implicit <strong>quasi-randomization
+assumption</strong> &mdash; that because residents were unaware of the contamination, their dose is
+independent of lifestyle given age. We treat that assumption as a first-class object to be probed,
+not a footnote.</p>
+
+<h3>C. Estimate, reproduce, and stress-test</h3>
+<ul>
+  <li><strong>Reproduce</strong> the published external SIR from counts (validation that the
+  digitized data and machinery agree with the source).</li>
+  <li><strong>Fit</strong> the internal dose&ndash;response &mdash; the radiation-standard linear
+  excess-relative-risk model and a log-linear hazard model &mdash; adjusting for age at exposure
+  where the tables permit.</li>
+  <li><strong>Bias analysis:</strong> E-values for unmeasured confounding; a
+  classical-vs-Berkson measurement-error simulation; sensitivity to the assumed within-group dose;
+  and false-discovery-rate control for multiple comparisons.</li>
+</ul>
+
+<h2>3. Results</h2>
+
+<h3>The two headline findings are both real &mdash; and not in conflict</h3>
+<table>
+  <thead><tr><th>Quantity</th><th class="n">Estimate</th><th>Reading</th></tr></thead>
+  <tbody>
+    <tr><td>External SIR (Doss, reproduced exactly)</td><td class="n">0.84<br><span class="small">(0.74&ndash;0.95)</span></td><td>Apparent cancer <em>deficit</em> vs general Taiwan population</td></tr>
+    <tr><td>Internal breast HR per 100&nbsp;mSv (age-adjusted)</td><td class="n">1.50<br><span class="small">(1.08&ndash;2.08)</span></td><td>Positive dose&ndash;response <em>within</em> the cohort</td></tr>
+    <tr><td>Published leukaemia HR per 100&nbsp;mSv</td><td class="n">1.18<br><span class="small">(1.04&ndash;1.28)</span></td><td>Positive; survives FDR</td></tr>
+    <tr><td>Breast, first exposed &le;20&nbsp;yrs (trend)</td><td class="n">1.38<br><span class="small">(1.14&ndash;1.60)</span></td><td>Steep dose&ndash;response in the young &mdash; matches A-bomb biology</td></tr>
+  </tbody>
+</table>
+<p>A young, health-selected cohort can simultaneously have <em>fewer</em> total cancers than an
+older general population <em>and</em> a real internal gradient in which higher-dose members get more
+cancer than lower-dose members of the same cohort. These answer different causal questions. The
+external comparison conditions on a non-exchangeable reference; the internal comparison does not.</p>
+
+<h3>Why the deficit looks &ldquo;protective&rdquo;</h3>
+<p>Within the cohort, the cancer-rate gradient across <em>age at exposure</em> is
+<strong>~14&times;</strong> (oldest vs youngest), while the gradient across <em>dose</em> is only
+<strong>~2.6&times;</strong>. Age structure dominates any crude external comparison. Re-weighting the
+cohort&rsquo;s own age-specific rates toward an older, population-like structure raises the
+standardized rate ~2.1&times; &mdash; the deficit is manufactured by the cohort being young (mean age
+at first exposure ~17) plus healthy-cohort selection, not by radiation being protective.</p>
+
+<h3>Is the internal signal robust?</h3>
+<table>
+  <thead><tr><th>Test</th><th>Result</th><th>Implication</th></tr></thead>
+  <tbody>
+    <tr><td>E-value (unmeasured confounding)</td><td class="n">1.2&ndash;1.6</td><td class="no">Modest &mdash; the main caveat</td></tr>
+    <tr><td>Measurement error simulation</td><td>classical <strong>attenuates</strong> the slope</td><td class="yes">Estimates are conservative, not inflated</td></tr>
+    <tr><td>Exposure-model sensitivity</td><td>sign &amp; significance invariant</td><td class="yes">Direction robust; magnitude uncertain</td></tr>
+    <tr><td>FDR (Benjamini&ndash;Hochberg)</td><td>breast &amp; leukaemia survive</td><td class="yes">Not the same as Hwang&rsquo;s single-count SIR hits</td></tr>
+  </tbody>
+</table>
+
+<h2>4. In response to Southwood &amp; Chalmers</h2>
+<p>Southwood and Chalmers argue that the case for low-dose radiation harm is weak, and use this
+cohort as a centrepiece: the affected group has <em>fewer</em> cancers overall, so the site-specific
+&ldquo;excesses&rdquo; look like statistical noise. This reanalysis <strong>agrees with much of their
+critique</strong> but parts ways on the load-bearing inference.</p>
+
+<h3>Where we agree</h3>
+<ul>
+  <li><strong>The deficit is real</strong>, and Chen &amp; Luan&rsquo;s hormesis mortality claim is
+  the weakest reading of it (mortality endpoint, young cohort, short follow-up).</li>
+  <li><strong>Hwang 2006&rsquo;s site-specific SIRs are multiple-comparison noise.</strong> Their
+  point &mdash; 77 subtypes screened, every &ldquo;significant&rdquo; site resting on &le;7 cases,
+  ~4 false positives expected by chance &mdash; is exactly what our FDR step reproduces.</li>
+  <li>Pre-registration concerns are legitimate, and the magnitude of any effect is soft.</li>
+</ul>
+
+<h3>Where the reasoning breaks &mdash; the crux</h3>
+<p>The article treats the overall deficit as evidence <em>against</em> causation and the internal
+dose&ndash;response as p-hacking that &ldquo;contradicts&rdquo; it. Under confounding, that is a
+non-sequitur &mdash; and two numbers show why:</p>
+<div class="callout">
+  <p class="h">1 &mdash; The &ldquo;35% lower&rdquo; figure is largely an age artifact</p>
+  <p style="margin:0">The article&rsquo;s headline &ldquo;cancer rates ~35% lower&rdquo; is a
+  <em>crude</em>, age-unadjusted comparison (254 vs ~390 per 100,000 person-years &rarr; SIR&nbsp;0.65).
+  Proper age-standardization &mdash; what Doss actually does &mdash; shrinks the deficit to
+  <strong>16%</strong> (SIR&nbsp;0.84). <strong>Roughly 54% of the deficit the argument leans on is
+  simply the cohort being young</strong>, which standardization removes. The residual ~16% is
+  healthy-cohort selection &mdash; still not radiation.</p>
+</div>
+<div class="callout">
+  <p class="h">2 &mdash; The deficit cannot detect the effect in question</p>
+  <p style="margin:0">At the cohort&rsquo;s mean dose (~48&nbsp;mSv), a linear-no-threshold effect
+  predicts on the order of <strong>6&ndash;14 excess cancers</strong> &mdash; invisible against a
+  ~47-cancer selection-driven deficit. &ldquo;Fewer cancers overall&rdquo; is quantitatively
+  compatible with a real internal dose effect; it has no power to refute one.</p>
+</div>
+<p>The internal comparison is exactly the estimand the external deficit cannot speak to, because
+high- and low-dose members <em>share</em> the selection that drives the deficit. So the deficit is
+uninformative about the dose&ndash;response, rather than a rebuttal to it.</p>
+
+<h3>Where the article has force &mdash; and where it is too dismissive</h3>
+<p>In fairness, our own analysis says the internal signal is <strong>fragile</strong>: modest
+E-values mean a moderate unmeasured confounder (e.g. reproductive history, unmeasured here) could
+weaken the breast-cancer result. So &ldquo;unconvincing&rdquo; is not unreasonable. But the article
+lumps together two very different things: Hwang&rsquo;s subtype dredge, and Hsieh&rsquo;s
+<em>pre-specified continuous-dose</em> model &mdash; especially the <strong>young-breast finding
+(HR&nbsp;1.38, p&nbsp;=&nbsp;0.0008)</strong>, which is a directed hypothesis with strong external
+corroboration in the atomic-bomb survivor data. That external consistency is the article&rsquo;s
+blind spot.</p>
+
+<h2>5. Verdict</h2>
+<p>The reanalysis lands close to Southwood &amp; Chalmers on the practical temperature &mdash; harm at
+these doses is small and hard to pin down &mdash; but rejects the route they take to get there.
+&ldquo;Probably fine&rdquo; is defended with an age-inflated external deficit used to discredit an
+internal gradient the deficit is structurally incapable of addressing. The more defensible reading is
+narrower and less reassuring: <strong>a small, real, positive dose&ndash;response, consistent with
+linear-no-threshold, not identified cleanly enough from public data to settle the regulatory
+question by itself.</strong> Their conclusion might still be right &mdash; but not for the reason they
+give.</p>
+
+<h2>6. Reproduce it</h2>
+<p>Everything above is generated by a runnable pipeline: <code>./run.sh</code> digitizes the tables,
+runs the QC gate, builds the DAG, reproduces the published numbers, fits the causal models, runs the
+bias analyses, and writes the synthesis. Code, data, and methods:</p>
+<p style="margin:20px 0">
+  <span class="pill">DAG + d-separation</span>
+  <span class="pill">linear-ERR &amp; log-linear fits</span>
+  <span class="pill">E-values</span>
+  <span class="pill">measurement-error simulation</span>
+  <span class="pill">FDR</span>
+</p>
+<p>&rarr; <a href="https://github.com/riemannzeta/co60-causal-reanalysis"><strong>github.com/riemannzeta/co60-causal-reanalysis</strong></a></p>
+
+<div class="callout">
+  <p class="h">Limitations</p>
+  <p style="margin:0">Aggregate-only (no individual-level causal ML); representative within-group
+  doses are assumed (sign/significance invariant, magnitude not); core confounders (smoking,
+  reproductive history, cluster-level SES) are unmeasured; the Chen/Luan and Hwang/Hsieh cohorts use
+  different denominators and endpoints and must not be pooled. A definitive answer requires the
+  restricted individual-level microdata.</p>
+</div>
+
+<div class="foot">
+  <p>Report and analysis auto-generated from the reproducible pipeline at
+  <a href="https://github.com/riemannzeta/co60-causal-reanalysis">github.com/riemannzeta/co60-causal-reanalysis</a>.
+  Responds to Ben Southwood &amp; Alex Chalmers,
+  <a href="https://www.worksinprogress.news/p/low-dose-radiation-is-probably-fine">Low-dose radiation is probably fine</a>,
+  Works in Progress, 30 June 2026.</p>
+  <p>Primary data: Hsieh &amp; Chang et al. 2017 (<em>Br J Cancer</em>); Hwang et al. 2006/2008;
+  Doss 2018; Chen &amp; Luan 2007 (<em>Dose-Response</em>); Tung et al. 1998 (<em>Health Physics</em>).
+  All numbers computed from open-access aggregate tables.</p>
+</div>
+
+</div>
+</body>
+</html>

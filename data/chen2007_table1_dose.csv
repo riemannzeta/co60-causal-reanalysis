@@ -1,0 +1,14 @@
+# Source: Chen WL, Luan YC, et al. 2007. "Effects of Cobalt-60 Exposure on Health of
+#   Taiwan Residents Suggest New Approach Needed in Radiation Protection."
+#   Dose-Response 5(1):63-75. Table 1 (dosimetry, AEC-sourced; hormesis framing).
+# URL: https://pmc.ncbi.nlm.nih.gov/articles/PMC2477708/   Extracted: 2026-07-02.
+# NOTE: This paper uses a DIFFERENT denominator (~10,000, mortality) and MUCH larger mean
+#   dose (~0.4 Sv adjusted) than the Hwang/Hsieh registry cohort (6,242; mean 47.7 mSv incidence).
+#   These are NOT poolable; kept for the hormesis-vs-excess reconciliation only.
+# collective_dose_person_sv for High is starred in the paper (50% relocated after Jul 1996).
+cohort,number,mean_1983_annual_msv,accum_1983_2003_msv,collective_dose_person_sv
+high,1100,525,4000,2660
+medium,900,60,420,378
+low,8000,18,120,960
+averaged,10000,74,600,6000
+adjusted,10000,49,400,4000

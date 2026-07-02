@@ -1,0 +1,138 @@
+{
+  "n_pass": 22,
+  "n_total": 22,
+  "checks": [
+    {
+      "label": "solid overall subjects",
+      "got": 6242,
+      "want": 6242,
+      "ok": true
+    },
+    {
+      "label": "solid overall cases",
+      "got": 247,
+      "want": 247,
+      "ok": true
+    },
+    {
+      "label": "solid overall person-years",
+      "got": 97106,
+      "want": 97106,
+      "ok": true
+    },
+    {
+      "label": "solid subjects sum over sex",
+      "got": 6242,
+      "want": 6242,
+      "ok": true
+    },
+    {
+      "label": "solid subjects sum over age_at_exposure",
+      "got": 6242,
+      "want": 6242,
+      "ok": true
+    },
+    {
+      "label": "solid subjects sum over dose_group",
+      "got": 6242,
+      "want": 6242,
+      "ok": true
+    },
+    {
+      "label": "solid cases sum over sex",
+      "got": 247,
+      "want": 247,
+      "ok": true
+    },
+    {
+      "label": "solid cases sum over age_at_exposure",
+      "got": 247,
+      "want": 247,
+      "ok": true
+    },
+    {
+      "label": "solid cases sum over dose_group",
+      "got": 247,
+      "want": 247,
+      "ok": true
+    },
+    {
+      "label": "solid py sum over sex",
+      "got": 97106,
+      "want": 97106,
+      "ok": true
+    },
+    {
+      "label": "solid py sum over age_at_exposure",
+      "got": 97106,
+      "want": 97106,
+      "ok": true
+    },
+    {
+      "label": "solid py sum over dose_group",
+      "got": 97106,
+      "want": 97106,
+      "ok": true
+    },
+    {
+      "label": "leuk overall cases",
+      "got": 11,
+      "want": 11,
+      "ok": true
+    },
+    {
+      "label": "leuk overall person-years",
+      "got": 147984,
+      "want": 147984,
+      "ok": true
+    },
+    {
+      "label": "leuk cases sum over sex",
+      "got": 11,
+      "want": 11,
+      "ok": true
+    },
+    {
+      "label": "leuk cases sum over age_at_exposure",
+      "got": 11,
+      "want": 11,
+      "ok": true
+    },
+    {
+      "label": "leuk cases sum over dose_group",
+      "got": 11,
+      "want": 11,
+      "ok": true
+    },
+    {
+      "label": "breast Table 3 cells sum to Table 2 count",
+      "got": 35,
+      "want": 35,
+      "ok": true
+    },
+    {
+      "label": "all_cancers HR-table case count",
+      "got": 249,
+      "want": 249,
+      "ok": true
+    },
+    {
+      "label": "doss rows",
+      "got": 2,
+      "want": 2,
+      "ok": true
+    },
+    {
+      "label": "chen table1 rows",
+      "got": 5,
+      "want": 5,
+      "ok": true
+    },
+    {
+      "label": "chen observed cancer deaths",
+      "got": 7,
+      "want": 7,
+      "ok": true
+    }
+  ]
+}
