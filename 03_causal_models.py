@@ -3,10 +3,21 @@ apparent contradiction between the external SIR (~0.84, "protective") and the in
 dose-response (>0, "harmful").
 
 Key Pearl-style move: the external SIR conditions on a non-exchangeable reference
-population (Selection node in dag.py). The internal dose gradient does not. We show that a
-young cohort produces an external deficit *even if radiation strictly increases risk*,
-because the age structure (a 15x rate gradient across age-at-exposure) dominates the crude
-comparison. So the two findings are not in conflict -- they answer different questions.
+population (Selection node in dag.py). The internal dose gradient does not. Two facts do
+the reconciling:
+
+  1. The article's headline "~35% lower" is the *crude*, all-ages comparison
+     (247 cancers / 97,106 py = 254 per 100k vs Taiwan's national 390 per 100k -> SIR 0.65).
+     Age-standardizing to the cohort's own age distribution -- what Doss actually does --
+     moves it to SIR 0.84. So a substantial part of the crude 35% is age structure (the
+     national rate is inflated by an elderly tail this cohort barely has).
+  2. But a deficit *survives* standardization: Doss 0.84 (~16%), Hwang 2008 0.75 (~25%).
+     That residual is NOT protection and NOT the cohort "being young" (its attained age by
+     2012 is ~45, older than Taiwan's mean) -- it is healthy-cohort SELECTION.
+
+Selection is the crux: an external deficit driven by selection cannot detect the internal
+dose-response, because high- and low-dose residents *share* the selection. So the two
+findings are not in conflict -- they answer different questions.
 """
 from __future__ import annotations
 
@@ -14,6 +25,11 @@ import numpy as np
 
 from co60lib import (REP_DOSE_SV, banner, fit_err_linear, fit_loglinear_hr, load_csv,
                      save_result)
+
+# Taiwan national all-ages cancer incidence rate, 2008-2012, per 100k person-years, as
+# cited by Southwood & Chalmers (Taiwan Cancer Registry). This is the crude reference the
+# article's "35% lower" headline is computed against.
+TAIWAN_NATIONAL_RATE_PER_100K = 390.0
 
 
 def internal_breast_err():
@@ -37,9 +53,13 @@ def internal_breast_err():
 
 
 def age_gradient_vs_dose_gradient():
-    """Show that the age-at-exposure rate gradient dwarfs the dose gradient -- the reason a
-    young cohort dominates any crude external comparison."""
-    banner("Why the external SIR looks protective: age gradient >> dose gradient")
+    """Mechanism note: the age-at-exposure rate gradient dwarfs the dose gradient. This is
+    why a *crude* external comparison misleads -- NOT why the standardized SIR is <1 (Doss's
+    SIR already conditions on age; see external_deficit_decomposition below). Note the cohort
+    is not simply 'young': by 2012 its attained age (~45) exceeds Taiwan's mean -- the issue
+    is the compressed age *distribution* (few elderly person-years), which the crude national
+    all-ages rate is not."""
+    banner("Mechanism: age gradient >> dose gradient (why a CRUDE comparison misleads)")
     solid = load_csv("bjc2017_table1_solid.csv")
     age = solid[solid.stratum_type == "age_at_exposure"].copy()
     dose = solid[solid.stratum_type == "dose_group"].copy()
@@ -57,47 +77,77 @@ def age_gradient_vs_dose_gradient():
             "dose_rates": dict(zip(dose.stratum, dose_rate.tolist()))}
 
 
-def standardization_demo():
-    """Direct-standardization demonstration: apply the cohort's own age-specific rates to a
-    (a) young cohort weighting vs (b) an older, general-population-like weighting. The same
-    rates yield a far higher standardized rate under (b), showing the external deficit is an
-    age-structure artifact, not evidence of protection."""
-    banner("Standardization demo: the deficit is an age-structure artifact")
-    solid = load_csv("bjc2017_table1_solid.csv")
-    age = solid[solid.stratum_type == "age_at_exposure"].copy()
-    rate = (age.cases.values / age.person_years.values) * 1e4  # cohort age-specific rates
-    labels = list(age.stratum)
+def external_deficit_decomposition():
+    """Decompose the external deficit into (a) age structure and (b) surviving selection,
+    using only published numbers -- no invented reference weights.
 
-    # (a) the cohort's actual person-year weights (young-skewed)
-    w_cohort = age.person_years.values / age.person_years.values.sum()
-    # (b) an older, general-population-like weighting (illustrative: weight mass toward >=40).
-    #     Taiwan's adult-population age structure puts far more weight on older ages than this
-    #     cohort, whose person-time is dominated by the <20 group.
-    w_ref = np.array([0.30, 0.35, 0.35])  # lt20, 20_39, ge40 -- illustrative reference
-    std_cohort = float(np.sum(w_cohort * rate))
-    std_ref = float(np.sum(w_ref * rate))
-    print(f"   cohort age-specific rates per 10k: {dict(zip(labels, np.round(rate,2)))}")
-    print(f"   cohort person-year weights:        {dict(zip(labels, np.round(w_cohort,3)))}")
-    print(f"   crude (cohort-weighted) rate  = {std_cohort:.1f} per 10k")
-    print(f"   older-reference-weighted rate = {std_ref:.1f} per 10k")
-    print(f"   -> same rates, {std_ref/std_cohort:.1f}x higher under an older reference.")
-    print("   The external comparison population is older than this cohort, so observed<expected")
-    print("   arises mechanically from age -- consistent with a genuine positive dose effect.")
-    return {"std_cohort_rate": std_cohort, "std_ref_rate": std_ref,
-            "ratio": std_ref / std_cohort, "ref_weights": w_ref.tolist()}
+    crude expected  = national all-ages rate x cohort person-years   -> the article's 35%
+    standardized expected = Doss's age-standardized expected (296.4)  -> SIR 0.84 survives
+
+    The gap between crude and standardized expected is the age-structure component; the gap
+    that remains between standardized expected and observed is the healthy-cohort SELECTION
+    component. Neither is evidence of radiation being protective."""
+    banner("External deficit: crude 35% vs standardized ~16% -> the residual is SELECTION")
+    solid = load_csv("bjc2017_table1_solid.csv")
+    overall = solid[solid.stratum_type == "overall"].iloc[0]
+    observed = float(overall.cases)          # 247 (Hsieh 2017 Table 1, solid cancers)
+    py = float(overall.person_years)         # 97,106
+
+    # (1) crude comparison -- exactly how the article computes "~35% lower"
+    crude_expected = TAIWAN_NATIONAL_RATE_PER_100K / 1e5 * py
+    crude_sir = observed / crude_expected
+
+    # (2) age-standardized comparison -- Doss's printed values (indirect standardization)
+    doss = load_csv("doss2018_sir.csv")
+    drow = doss[doss.dataset == "hsieh2017_2012"].iloc[0]
+    std_expected = float(drow.expected)      # 296.4
+    std_observed = float(drow.observed)      # 249 (Doss's count; ~ = Table 1's 247)
+    std_sir = std_observed / std_expected    # 0.84
+
+    # decomposition of the CRUDE deficit into age structure vs surviving selection
+    crude_deficit = 1.0 - crude_sir                      # ~0.35
+    std_deficit = 1.0 - std_sir                          # ~0.16 (survives standardization)
+    # count scale: how many of the "missing" crude cancers are removed by standardization
+    missing_crude = crude_expected - observed
+    removed_by_age = crude_expected - std_expected
+    age_share_counts = removed_by_age / missing_crude
+    # ratio scale: fraction of the crude *deficit* that standardization removes
+    age_share_ratio = (crude_deficit - std_deficit) / crude_deficit
+
+    print(f"   observed cancers = {observed:.0f} over {py:,.0f} person-years "
+          f"({observed/py*1e5:.0f} per 100k)")
+    print(f"   crude expected @ {TAIWAN_NATIONAL_RATE_PER_100K:.0f}/100k = {crude_expected:.0f}"
+          f"  -> crude SIR = {crude_sir:.2f}  (the article's ~{crude_deficit*100:.0f}% lower)")
+    print(f"   age-standardized expected (Doss) = {std_expected:.1f}"
+          f"  -> SIR = {std_sir:.2f}  (deficit {std_deficit*100:.0f}% SURVIVES)")
+    print(f"   age-structure share of the crude deficit: "
+          f"{age_share_counts*100:.0f}% (counts) / {age_share_ratio*100:.0f}% (ratio scale)")
+    print(f"   -> the surviving ~{std_deficit*100:.0f}% is healthy-cohort SELECTION, not protection.")
+    print("   Selection is shared by high- and low-dose residents, so it cannot mask or create")
+    print("   the internal dose-response -- the external deficit is uninformative about it.")
+    return {"observed": observed, "person_years": py,
+            "national_rate_per_100k": TAIWAN_NATIONAL_RATE_PER_100K,
+            "crude_expected": crude_expected, "crude_sir": crude_sir,
+            "std_expected": std_expected, "std_sir": std_sir,
+            "crude_deficit": crude_deficit, "std_deficit_selection": std_deficit,
+            "age_share_counts": float(age_share_counts),
+            "age_share_ratio": float(age_share_ratio)}
 
 
 def main():
     result = {}
     result["internal_breast"] = internal_breast_err()
     result["gradients"] = age_gradient_vs_dose_gradient()
-    result["standardization"] = standardization_demo()
+    result["deficit_decomposition"] = external_deficit_decomposition()
 
     banner("Reconciliation verdict")
     print("  * Internal, age-adjusted dose-response: POSITIVE (dose -> cancer).")
-    print("  * External SIR ~0.84: a DEFICIT driven by the cohort being young, not by protection.")
-    print("  * Both hold simultaneously; a Pearl analysis privileges the internal gradient,")
-    print("    which conditions on age rather than on a non-exchangeable reference population.")
+    print("  * The article's crude '~35% lower' is inflated by age structure; standardizing")
+    print("    (Doss) leaves a ~16% deficit that SURVIVES -- that residual is healthy-cohort")
+    print("    SELECTION, not radiation being protective.")
+    print("  * A selection-driven external deficit cannot detect the internal dose-response,")
+    print("    because high- and low-dose residents share the selection. A Pearl analysis")
+    print("    privileges the internal gradient, which nets the selection out.")
     save_result("causal.json", result)
 
 

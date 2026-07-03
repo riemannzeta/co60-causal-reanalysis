@@ -24,7 +24,7 @@ def main():
     doss = {r["dataset"]: r for r in rep["doss_sir"]}
     breast = causal["internal_breast"]["hr_per_100msv"]
     grad = causal["gradients"]
-    std = causal["standardization"]
+    dec = causal["deficit_decomposition"]
     me = bias["measurement_error"]
     ev = {r["site"]: r for r in bias["evalues"]}
     fdr = bias["multiple_comparisons"]
@@ -53,16 +53,28 @@ def main():
       "They answer different causal questions, so 'protective SIR' and 'harmful dose–response' "
       "coexist without contradiction.\n")
 
-    W("## 2. Why the SIR looks 'protective' — an age-structure artifact")
-    W(f"- Age-at-exposure rate gradient = **{fmt(grad['age_gradient'],1)}×** "
-      f"(oldest/youngest) vs a dose gradient of only **{fmt(grad['dose_gradient'],1)}×**.")
-    W(f"- Applying the cohort's own age-specific rates under an older, population-like "
-      f"weighting raises the standardized rate **{fmt(std['ratio'],1)}×** — the deficit is "
-      f"manufactured by the cohort being young (mean age at first exposure ~17), not by "
-      f"radiation being protective.")
+    W("## 2. Why the SIR looks 'protective' — age structure, then selection")
+    W(f"- The article's headline **'~{fmt(dec['crude_deficit']*100,0)}% lower'** is the *crude*, "
+      f"all-ages comparison: {fmt(dec['observed'],0)} cancers / {dec['person_years']:,.0f} "
+      f"person-years = {fmt(dec['observed']/dec['person_years']*1e5,0)} per 100k vs Taiwan's "
+      f"national **{fmt(dec['national_rate_per_100k'],0)} per 100k** → crude SIR "
+      f"**{fmt(dec['crude_sir'])}**.")
+    W(f"- Age-standardizing to the cohort's own age distribution (what Doss does) moves it to "
+      f"SIR **{fmt(dec['std_sir'])}** — a deficit of **{fmt(dec['std_deficit_selection']*100,0)}%** "
+      f"that **survives**. So ~{fmt(dec['age_share_counts']*100,0)}% of the crude gap (counts "
+      f"scale) is age structure — the national rate is inflated by an elderly tail this cohort "
+      f"barely has — but the rest is real.")
+    W(f"- The surviving ~{fmt(dec['std_deficit_selection']*100,0)}% is **healthy-cohort "
+      f"selection**, not protection and not the cohort merely 'being young' (its attained age "
+      f"by 2012 is ~45, *older* than Taiwan's mean). Context: the age-at-exposure rate gradient "
+      f"is **{fmt(grad['age_gradient'],1)}×** vs a dose gradient of only "
+      f"**{fmt(grad['dose_gradient'],1)}×**, which is why a crude comparison misleads.")
+    W("- **This is the crux:** selection is shared by high- and low-dose residents, so a "
+      "selection-driven external deficit *cannot* create or mask the internal dose–response — "
+      "it is simply uninformative about it.")
     W("- The Chen/Luan hormesis claim (observed cancer *deaths* ≈ 7 vs ~232 'expected') is the "
-      "same artifact in a stronger form: a young cohort, a mortality (not incidence) endpoint, "
-      "short follow-up, and an all-ages external comparator.\n")
+      "same artifact in a stronger form: a mortality (not incidence) endpoint, short follow-up, "
+      "and an all-ages external comparator.\n")
 
     W("## 3. Is the internal signal robust? (bias analyses)")
     W(f"- **Unmeasured confounding (E-values):** breast E-value = "

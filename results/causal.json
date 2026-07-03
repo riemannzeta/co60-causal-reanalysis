@@ -35,14 +35,17 @@
       "ge100": 49.473004947300495
     }
   },
-  "standardization": {
-    "std_cohort_rate": 25.4361213519247,
-    "std_ref_rate": 52.383712419202595,
-    "ratio": 2.05942217740044,
-    "ref_weights": [
-      0.3,
-      0.35,
-      0.35
-    ]
+  "deficit_decomposition": {
+    "observed": 247.0,
+    "person_years": 97106.0,
+    "national_rate_per_100k": 390.0,
+    "crude_expected": 378.7134,
+    "crude_sir": 0.6522082397929411,
+    "std_expected": 296.4,
+    "std_sir": 0.8400809716599191,
+    "crude_deficit": 0.34779176020705893,
+    "std_deficit_selection": 0.15991902834008087,
+    "age_share_counts": 0.6249432479914725,
+    "age_share_ratio": 0.5401874148919671
   }
 }

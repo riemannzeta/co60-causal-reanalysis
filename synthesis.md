@@ -10,10 +10,12 @@
 - **Internal dose–response (this reanalysis):** positive and significant. Age-adjusted breast-cancer HR per 100 mSv = 1.498 (95% CI 1.080–2.079, p=0.016); marginal solid-cancer and leukaemia rate gradients are monotonic in dose.
 - A Pearl reading: the external SIR conditions on a **non-exchangeable reference population** (the `Selection` node). The internal gradient conditions on age instead. They answer different causal questions, so 'protective SIR' and 'harmful dose–response' coexist without contradiction.
 
-## 2. Why the SIR looks 'protective' — an age-structure artifact
-- Age-at-exposure rate gradient = **14.4×** (oldest/youngest) vs a dose gradient of only **2.6×**.
-- Applying the cohort's own age-specific rates under an older, population-like weighting raises the standardized rate **2.1×** — the deficit is manufactured by the cohort being young (mean age at first exposure ~17), not by radiation being protective.
-- The Chen/Luan hormesis claim (observed cancer *deaths* ≈ 7 vs ~232 'expected') is the same artifact in a stronger form: a young cohort, a mortality (not incidence) endpoint, short follow-up, and an all-ages external comparator.
+## 2. Why the SIR looks 'protective' — age structure, then selection
+- The article's headline **'~35% lower'** is the *crude*, all-ages comparison: 247 cancers / 97,106 person-years = 254 per 100k vs Taiwan's national **390 per 100k** → crude SIR **0.65**.
+- Age-standardizing to the cohort's own age distribution (what Doss does) moves it to SIR **0.84** — a deficit of **16%** that **survives**. So ~62% of the crude gap (counts scale) is age structure — the national rate is inflated by an elderly tail this cohort barely has — but the rest is real.
+- The surviving ~16% is **healthy-cohort selection**, not protection and not the cohort merely 'being young' (its attained age by 2012 is ~45, *older* than Taiwan's mean). Context: the age-at-exposure rate gradient is **14.4×** vs a dose gradient of only **2.6×**, which is why a crude comparison misleads.
+- **This is the crux:** selection is shared by high- and low-dose residents, so a selection-driven external deficit *cannot* create or mask the internal dose–response — it is simply uninformative about it.
+- The Chen/Luan hormesis claim (observed cancer *deaths* ≈ 7 vs ~232 'expected') is the same artifact in a stronger form: a mortality (not incidence) endpoint, short follow-up, and an all-ages external comparator.
 
 ## 3. Is the internal signal robust? (bias analyses)
 - **Unmeasured confounding (E-values):** breast E-value = 1.46 (point), 1.28 (CI limit); leukaemia (excl MM&CLL) = 1.64 / 1.24. These are **modest** — a confounder (e.g. reproductive history for breast) associated ~1.2–1.6× with both dose and cancer could weaken the signal. This is the single biggest caveat, because those confounders are unmeasured and the DAG shows their backdoor paths remain **open**.
